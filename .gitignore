@@ -1,2 +1,4 @@
 
 *.ini
+CudaCNN/build/CMakeFiles/3.10.0-rc1/CMakeCCompiler.cmake
+CudaCNN/include/cnnconfig.h
