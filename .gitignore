@@ -2,5 +2,5 @@
 *.ini
 CudaCNN/build/CMakeFiles/3.10.0-rc1/CMakeCCompiler.cmake
 CudaCNN/include/cnnconfig.h
-VRA.TranQuangKhai/VRA.TranQuangKhai/BaiTap/New/DataTest
-VRA.TranQuangKhai/VRA.TranQuangKhai/BaiTap/New/DataTrain
+BaiTap/New/DataTest
+BaiTap/New/DataTrain
