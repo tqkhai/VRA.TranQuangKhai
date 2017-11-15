@@ -1,8 +1,8 @@
-function BaiTap029()
+function BaiTap031()
     strFolderDataTrain = fullfile('DataTrain');
     categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     
-    imdsDataTrain = imgageDataStore(fullfile(strFolderDataTrain, categories), 'LabelSource', 'foldernames');
+    imdsDataTrain = imageDatastore(fullfile(strFolderDataTrain, categories), 'LabelSource', 'foldernames');
     imdsDataTrain.ReadFcn = @(filename)readAndPreprocessImage(filename);
     
     net = alexnet();
@@ -11,13 +11,20 @@ function BaiTap029()
     
     lblDataTrain = imdsDataTrain.Labels;
     
-    classifier = fitcecoc(featuresDataTrain, lblDataTrain, 'Learners', 'Linear', 'Coding', 'onevsall', 'ObservationsIn', 'columns');
+    classifier = fitcnb(featuresDataTrain, lblDataTrain);
     
     strFolderDataTest = fullfile('DataTest');
     categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     
-    imdsDataTest = imgageDataStore(fullfile(strFolderDataTest, categories), 'LabelSource', 'foldernames');
+    imdsDataTest = imageDatastore(fullfile(strFolderDataTest, categories), 'LabelSource', 'foldernames');
     imdsDataTest.ReadFcn = @(filename)readAndPreprocessImage(filename);
         
     featuresDataTest = activations(net, imdsDataTest, featureLayer, 'MiniBatchSize', 32);
+    
+    lblActualDataTest = imdsDataTest.Labels;
+    lblResult = predict(classifier, featuresDataTest);
+    nResult = (lblActualDataTest == lblResult);
+    nCount = sum(nResult);
+    
+    fprintf('So luong mau nhan dang dung: %d\n', nCount);
 end
