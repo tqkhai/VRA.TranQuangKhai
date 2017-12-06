@@ -38,11 +38,19 @@ function Final()
     
     switch feature
         case RAW %% Raw (pixel intensity)
-            fprintf('Your\n');
+            fprintf('Your choice is [1] raw (pixel intensity)\n');
+            
+            % extract features of data test and data train
             imgTrainAll_hist = ExtractFeaturesHistogram(imgDataTrain);
             imgTestAll_hist = ExtractFeaturesHistogram(imgDataTest);
 
-            Mdl = fitcknn(imgTrainAll_hist', lblDataTrain);
+%             % set parameters for knn
+            fprintf('Give some parameters:\n');
+            fprintf('[1] Standardize: true\n');
+            fprintf('[2] Standardize: true\n');
+            
+            Mdl = fitcknn(imgTrainAll_hist', lblDataTrain, 'NumNeighbors', 2);%, 'Standardize', 1);
+            fprintf('Processing...');            
             lblResult = predict(Mdl, imgTestAll_hist');
 
             nResult = (lblResult == lblDataTest);
@@ -50,6 +58,9 @@ function Final()
             fprintf('\nSo luong mau dung (raw): %d\n',nCount);
             
         case HOG %% Hog
+            fprintf('Your choice is [2] histogram of oriented gradients\n');
+            fprintf('Processing...');
+            
             featuresDataTrain = ExtractFeaturesHog(imgDataTrain);
             featuresDataTest = ExtractFeaturesHog(imgDataTest);
 
@@ -61,6 +72,9 @@ function Final()
             fprintf('\nSo luong mau dung (Hog): %d\n',nCount);
             
         case LBP %% LBP
+            fprintf('Your choice is [3] local binary patterns\n');
+            fprintf('Processing...');
+            
             featuresDataTrain = ExtractFeaturesLBP(imgDataTrain);
             featuresDataTest = ExtractFeaturesLBP(imgDataTest);
 
@@ -71,6 +85,9 @@ function Final()
             nCount = sum(nResult);
             fprintf('\nSo luong mau dung (LBP): %d\n',nCount);
         case BOW %% Bag of Words
+            fprintf('Your choice is [4] bag of words\n');
+            fprintf('Processing...');
+            
             rootFolder = fullfile('DataTrain');
             categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
@@ -111,6 +128,9 @@ function Final()
             mean(diag(confMatrixTest));
             
         case DL %% Deep Learning
+            fprintf('Your choice is [5] deep learning\n');
+            fprintf('Processing...');
+            
             strFolderDataTrain = fullfile('DataTrain');
             categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 

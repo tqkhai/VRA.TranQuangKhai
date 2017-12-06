@@ -5,12 +5,17 @@ function Final()
     strDataTest = 'dataset/t10k-images.idx3-ubyte';
     strLabelTest = 'dataset/t10k-labels.idx1-ubyte';
     
-    %%
+    %% Features
     RAW = 1;
     HOG = 2;
     LBP = 3;
     BOW = 4;
-    DL = 5;
+    DLF = 5; % deep learning features
+    
+    %% Methods
+    KNN = 1;
+    SVM = 2;
+    DLM = 3; % deep learning method
     
     %% Load du lieu train va du lieu test
     [imgDataTrain, lblDataTrain] = loadData(strDataTrain, strLabelTrain);
@@ -34,28 +39,32 @@ function Final()
     
     fprintf('-----------------------------------------\n');
     
-    
-    
     switch feature
         case RAW %% Raw (pixel intensity)
             fprintf('Your choice is [1] raw (pixel intensity)\n');
             
-            % extract features of data test and data train
-            imgTrainAll_hist = ExtractFeaturesHistogram(imgDataTrain);
-            imgTestAll_hist = ExtractFeaturesHistogram(imgDataTest);
-
-%             % set parameters for knn
-%             fprintf('Give some parameters:\n');
-%             fprintf('[1] Standardize: true\n');
-%             fprintf('[2] Standardize: true\n');
+            fprintf('-----------------------------------------\n');
+            [imgTrainAll_hist, imgTestAll_hist] = PixelIntensity(imgDataTrain, imgDataTest);
             
-            Mdl = fitcknn(imgTrainAll_hist', lblDataTrain, );
-            fprintf('Processing...');            
-            lblResult = predict(Mdl, imgTestAll_hist');
+            fprintf('-----------------------------------------\n');
+            fprintf('Machine Learning Methods:\n');
+            fprintf('[1] KNN\n');
+            fprintf('[2] SVM\n');
+            fprintf('[3] Deep Learning\n');            
+            
+            method = input('Choose method: ');
+            
+            fprintf('-----------------------------------------\n'); 
+            switch method
+                case KNN
+                    fprintf('So luong mau dung (raw-knn): %d\n', UsingKNN(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
+                case SVM
+                    fprintf('So luong mau dung (raw-svm): %d\n', UsingSVM(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
+                case DLM
+            end
 
-            nResult = (lblResult == lblDataTest);
-            nCount = sum(nResult);
-            fprintf('\nSo luong mau dung (raw): %d\n',nCount);
+                       
+            
             
         case HOG %% Hog
             fprintf('Your choice is [2] histogram of oriented gradients\n');
@@ -127,7 +136,7 @@ function Final()
             confMatrixTest = evaluate(categoryClassifier, imds);
             mean(diag(confMatrixTest));
             
-        case DL %% Deep Learning
+        case DLF %% Deep Learning
             fprintf('Your choice is [5] deep learning\n');
             fprintf('Processing...');
             
