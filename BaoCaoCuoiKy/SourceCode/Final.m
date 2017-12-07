@@ -31,7 +31,6 @@ function Final()
     fprintf('[5] Deep Learning\n');
    
     fprintf('-----------------------------------------\n');
-    
     feature = input('Choose feature: ');
     
 %     %if(feature )
@@ -52,6 +51,7 @@ function Final()
             fprintf('[2] SVM\n');
             fprintf('[3] Deep Learning\n');            
             
+            fprintf('-----------------------------------------\n');
             method = input('Choose method: ');
             
             fprintf('-----------------------------------------\n'); 
@@ -61,11 +61,9 @@ function Final()
                 case SVM
                     fprintf('So luong mau dung (raw-svm): %d\n', UsingSVM(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
                 case DLM
+                    
             end
 
-                       
-            
-            
         case HOG %% Hog
             fprintf('Your choice is [2] histogram of oriented gradients\n');
             fprintf('Processing...');

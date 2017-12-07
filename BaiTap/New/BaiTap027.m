@@ -20,7 +20,7 @@ function BaiTap027()
     imgTestAll_hist = zeros(nBins, nTestImages);
     
     for i = 1 : nTestImages
-        imgTestAll_hist = imhist(imgTestAll(:, i), nBins);
+        imgTestAll_hist(:, i) = imhist(imgTestAll(:, i), nBins);
     end
         
     lblResult = predict(Mdl, imgTestAll_hist');
