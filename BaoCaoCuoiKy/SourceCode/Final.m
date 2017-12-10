@@ -55,14 +55,19 @@ function Final()
             method = input('Choose method: ');
             
             fprintf('-----------------------------------------\n'); 
+            fprintf(['Start time: ', datestr(datetime('now')), '\n']);
+            fprintf('-----------------------------------------\n'); 
             switch method
                 case KNN
                     fprintf('So luong mau dung (raw-knn): %d\n', UsingKNN(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
                 case SVM
                     fprintf('So luong mau dung (raw-svm): %d\n', UsingSVM(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
                 case DLM
-                    
             end
+            
+            fprintf('-----------------------------------------\n'); 
+            fprintf(['End time: ', datestr(datetime('now'))], '\n');
+            fprintf('-----------------------------------------\n');
 
         case HOG %% Hog
             fprintf('Your choice is [2] histogram of oriented gradients\n');
