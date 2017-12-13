@@ -1,8 +1,7 @@
 function [nCount] = UsingSVM(featureDataTrain, lblDataTrain, featureDataTest, lblDataTest)
-    Mdl = fitcecoc(featureDataTrain', lblDataTrain);
-
-    fprintf('-----------------------------------------\n');
     fprintf('Processing...\n');   
+    
+    Mdl = fitcecoc(featureDataTrain', lblDataTrain);
 
     lblResult = predict(Mdl, featureDataTest');
     

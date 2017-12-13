@@ -12,10 +12,7 @@ function Final()
     BOW = 4;
     DLF = 5; % deep learning features
     
-    %% Methods
-    KNN = 1;
-    SVM = 2;
-    DLM = 3; % deep learning method
+    
     
     %% Load du lieu train va du lieu test
     [imgDataTrain, lblDataTrain] = loadData(strDataTrain, strLabelTrain);
@@ -28,7 +25,7 @@ function Final()
     fprintf('[2] Histogram of Oriented Gradients (HOG)\n');
     fprintf('[3] Local Binary Pattern (LBP)\n');
     fprintf('[4] Bag of Words (BoW)\n');
-    fprintf('[5] Deep Learning\n');
+    fprintf('[5] Deep Features\n');
    
     fprintf('-----------------------------------------\n');
     feature = input('Choose feature: ');
@@ -45,57 +42,34 @@ function Final()
             fprintf('-----------------------------------------\n');
             [imgTrainAll_hist, imgTestAll_hist] = PixelIntensity(imgDataTrain, imgDataTest);
             
-            fprintf('-----------------------------------------\n');
-            fprintf('Machine Learning Methods:\n');
-            fprintf('[1] KNN\n');
-            fprintf('[2] SVM\n');
-            fprintf('[3] Deep Learning\n');            
+            [nCount, type] = ChooseMethod(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest);
             
-            fprintf('-----------------------------------------\n');
-            method = input('Choose method: ');
-            
-            fprintf('-----------------------------------------\n'); 
-            fprintf(['Start time: ', datestr(datetime('now')), '\n']);
-            fprintf('-----------------------------------------\n'); 
-            switch method
-                case KNN
-                    fprintf('So luong mau dung (raw-knn): %d\n', UsingKNN(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
-                case SVM
-                    fprintf('So luong mau dung (raw-svm): %d\n', UsingSVM(imgTrainAll_hist, lblDataTrain, imgTestAll_hist, lblDataTest));
-                case DLM
-            end
-            
-            fprintf('-----------------------------------------\n'); 
-            fprintf(['End time: ', datestr(datetime('now'))], '\n');
-            fprintf('-----------------------------------------\n');
+            fprintf(['So luong mau dung (raw-', type, '): %d\n'], nCount);
 
         case HOG %% Hog
-            fprintf('Your choice is [2] histogram of oriented gradients\n');
-            fprintf('Processing...');
+            fprintf('Your choice is [2] histogram of oriented gradients (HoG)\n');
             
+            fprintf('-----------------------------------------\n');
+            fprintf('Extracting Hog features...\n');
             featuresDataTrain = ExtractFeaturesHog(imgDataTrain);
             featuresDataTest = ExtractFeaturesHog(imgDataTest);
+            
+            [nCount, type] = ChooseMethod(featuresDataTrain, lblDataTrain, featuresDataTest, lblDataTest);
 
-            Mdl = fitcknn(featuresDataTrain', lblDataTrain);
-            lblResult = predict(Mdl, featuresDataTest');
-
-            nResult = (lblResult == lblDataTest);
-            nCount = sum(nResult);
-            fprintf('\nSo luong mau dung (Hog): %d\n',nCount);
+            fprintf(['So luong mau dung (hog-', type, '): %d\n'], nCount);
             
         case LBP %% LBP
-            fprintf('Your choice is [3] local binary patterns\n');
-            fprintf('Processing...');
+            fprintf('Your choice is [3] local binary patterns (LBP)\n');
             
+            fprintf('-----------------------------------------\n');
+            fprintf('Extracting LBP features...\n');
             featuresDataTrain = ExtractFeaturesLBP(imgDataTrain);
             featuresDataTest = ExtractFeaturesLBP(imgDataTest);
 
-            Mdl = fitcknn(featuresDataTrain', lblDataTrain);
-            lblResult = predict(Mdl, featuresDataTest');
-
-            nResult = (lblResult == lblDataTest);
-            nCount = sum(nResult);
-            fprintf('\nSo luong mau dung (LBP): %d\n',nCount);
+            [nCount, type] = ChooseMethod(featuresDataTrain, lblDataTrain, featuresDataTest, lblDataTest);
+            
+            fprintf(['So luong mau dung (lbp-', type, '): %d\n'], nCount);
+            
         case BOW %% Bag of Words
             fprintf('Your choice is [4] bag of words\n');
             fprintf('Processing...');
@@ -111,7 +85,7 @@ function Final()
             tbl02 = countEachLabel(imds)
 
             load('bags.mat');
-    %         
+    
     %         bags = bagOfFeatures(imds);
     %         % save bags
     %         filename = 'bags.mat';
@@ -126,7 +100,7 @@ function Final()
             ylabel('Frequency of occurrence');
 
             load('categoryClassifier.mat');
-    %          
+             
     %         categoryClassifier = trainImageCategoryClassifier(imds, bags);
     %         % save category classifier
     %         filename = 'categoryClassifier.mat';
@@ -139,9 +113,11 @@ function Final()
             confMatrixTest = evaluate(categoryClassifier, imds);
             mean(diag(confMatrixTest));
             
-        case DLF %% Deep Learning
-            fprintf('Your choice is [5] deep learning\n');
-            fprintf('Processing...');
+        case DLF %% Deep Features
+            fprintf('Your choice is [3] local binary patterns (LBP)\n');
+            
+            fprintf('-----------------------------------------\n');
+            fprintf('Extracting deep features...\n');
             
             strFolderDataTrain = fullfile('DataTrain');
             categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -152,11 +128,8 @@ function Final()
             net = alexnet();
             featureLayer = 'fc7';
             featuresDataTrain = activations(net, imdsDataTrain, featureLayer, 'MiniBatchSize', 32, 'OutputAs', 'columns');
-
             lblDataTrain = imdsDataTrain.Labels;
-
-            classifier = fitcecoc(featuresDataTrain, lblDataTrain, 'Learners', 'Linear', 'Coding', 'onevsall', 'ObservationsIn', 'columns');
-
+            
             strFolderDataTest = fullfile('DataTest');
             categories = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
@@ -164,12 +137,14 @@ function Final()
             imdsDataTest.ReadFcn = @(filename)readAndPreprocessImage(filename);
 
             featuresDataTest = activations(net, imdsDataTest, featureLayer, 'MiniBatchSize', 32);
-
             lblActualDataTest = imdsDataTest.Labels;
-            lblResult = predict(classifier, featuresDataTest);
-            nResult = (lblActualDataTest == lblResult);
-            nCount = sum(nResult);
-
-            fprintf('So luong mau nhan dang dung: %d\n', nCount);
+            
+            [nCount, type] = ChooseMethod(featuresDataTrain, lblDataTrain, featuresDataTest, lblActualDataTest);
+            
+            fprintf(['So luong mau dung (deep-', type, '): %d\n'], nCount);            
     end   
+    
+    fprintf('-----------------------------------------\n'); 
+    fprintf(['End time: ', datestr(datetime('now')), '\n']);
+    fprintf('-----------------------------------------\n');
 end

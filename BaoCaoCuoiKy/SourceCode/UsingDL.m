@@ -1,9 +1,7 @@
 function [nCount] = UsingDL(featureDataTrain, lblDataTrain, featureDataTest, lblDataTest)
-%     t = datetime('now');
-%     
-% 
-%     DateString = datestr(t);
+    classifier = fitcecoc(featureDataTrain, lblDataTrain, 'Learners', 'Linear', 'Coding', 'onevsall', 'ObservationsIn', 'columns');
     
-    fprintf(['Start time: ', datestr(datetime('now'))]);
-
+    lblResult = predict(classifier, featureDataTest);
+    nResult = (lblDataTest == lblResult);
+    nCount = sum(nResult);
 end
