@@ -1,7 +1,7 @@
 function CreateDataTest()
-    %% Load image data train
-    imgTestAll = loadMNISTImages('t10k-images.idx3-ubyte');
-    lblTestAll = loadMNISTLabels('t10k-labels.idx1-ubyte');
+    %% Load image data test
+    imgTestAll = loadMNISTImages('dataset\t10k-images.idx3-ubyte');
+    lblTestAll = loadMNISTLabels('dataset\t10k-labels.idx1-ubyte');
     
     nTestImages = size(imgTestAll, 2);
     

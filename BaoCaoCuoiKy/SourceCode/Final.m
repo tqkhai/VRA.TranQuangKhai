@@ -10,7 +10,7 @@ function Final()
     HOG = 2;
     LBP = 3;
     BOW = 4;
-    DLF = 5; % deep learning features
+    DF = 5; % deep learning features
     
     
     
@@ -25,7 +25,7 @@ function Final()
     fprintf('[2] Histogram of Oriented Gradients (HOG)\n');
     fprintf('[3] Local Binary Pattern (LBP)\n');
     fprintf('[4] Bag of Words (BoW)\n');
-    fprintf('[5] Deep Features\n');
+    fprintf('[5] Deep Features (DF)\n');
    
     fprintf('-----------------------------------------\n');
     feature = input('Choose feature: ');
@@ -113,10 +113,23 @@ function Final()
             confMatrixTest = evaluate(categoryClassifier, imds);
             mean(diag(confMatrixTest));
             
-        case DLF %% Deep Features
-            fprintf('Your choice is [3] local binary patterns (LBP)\n');
+        case DF %% Deep Features
+            fprintf('Your choice is [5] deep features (DF)\n');
             
             fprintf('-----------------------------------------\n');
+            
+            if exist('DataTrain', 'dir') ~= 7
+                fprintf('Creating DataTrain folder...\n');
+                CreateDataTrain();
+                fprintf('-----------------------------------------\n');
+            end
+            
+            if exist('DataTest', 'dir') ~= 7
+                fprintf('Creating DataTest folder...\n');
+                CreateDataTrain();
+                fprintf('-----------------------------------------\n');
+            end
+            
             fprintf('Extracting deep features...\n');
             
             strFolderDataTrain = fullfile('DataTrain');

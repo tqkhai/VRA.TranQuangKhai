@@ -1,7 +1,7 @@
 function CreateDataTrain()
     %% Load image data train
-    imgTrainAll = loadMNISTImages('train-images.idx3-ubyte');
-    lblTrainAll = loadMNISTLabels('train-labels.idx1-ubyte');
+    imgTrainAll = loadMNISTImages('dataset\train-images.idx3-ubyte');
+    lblTrainAll = loadMNISTLabels('dataset\train-labels.idx1-ubyte');
     
     nTrainImages = size(imgTrainAll, 2);
     
