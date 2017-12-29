@@ -1,4 +1,4 @@
-function [featuresDataTrain] = ExtractFeaturesLBP(imgDataTrain)
+function [featuresDataTrain] = ExtractFeaturesLBP(imgDataTrain, numNeighbors, radius, cellSize, normalization)
     
     imgI1D = imgDataTrain(:, 1);
     imgI2D = reshape(imgI1D, 28, 28);
