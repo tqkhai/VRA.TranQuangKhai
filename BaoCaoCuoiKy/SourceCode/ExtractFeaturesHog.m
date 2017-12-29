@@ -1,7 +1,7 @@
-function [featuresData] = ExtractFeaturesHog(imgData)
+function [featuresData] = ExtractFeaturesHog(imgData, cellSize, blockSize, numBins)
     imgI1D = imgData(:, 1);
     imgI2D = reshape(imgI1D, 28, 28);
-    [featureVector, hogVisualization] = extractHOGFeatures(imgI2D);
+    [featureVector, hogVisualization] = extractHOGFeatures(imgI2D, 'CellSize', [cellSize cellSize], 'BlockSize', [blockSize blockSize], 'NumBins', numBins);
     
     nSize = length(featureVector);
     nData = size(imgData, 2);
@@ -11,6 +11,6 @@ function [featuresData] = ExtractFeaturesHog(imgData)
         imgI1D = imgData(:, i);
         imgI2D = reshape(imgI1D, 28, 28);
         
-        featuresData(:, i) = extractHOGFeatures(imgI2D);
+        featuresData(:, i) = extractHOGFeatures(imgI2D, 'CellSize', [cellSize cellSize], 'BlockSize', [blockSize blockSize], 'NumBins', numBins);
     end
 end

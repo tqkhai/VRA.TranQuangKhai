@@ -48,11 +48,16 @@ function Final()
 
         case HOG %% Hog
             fprintf('Your choice is [2] histogram of oriented gradients (HoG)\n');
-            
+			
+            fprintf('-----------------------------------------\n');
+            cellSize = input('Size of HOG cell (CellSize): ');
+			blockSize = input('Number of cells in block (BlockSize): ');
+			numBins = input('Number of orientation histogram bins (NumBins): ');
+			
             fprintf('-----------------------------------------\n');
             fprintf('Extracting Hog features...\n');
-            featuresDataTrain = ExtractFeaturesHog(imgDataTrain);
-            featuresDataTest = ExtractFeaturesHog(imgDataTest);
+            featuresDataTrain = ExtractFeaturesHog(imgDataTrain, cellSize, blockSize, numBins);
+            featuresDataTest = ExtractFeaturesHog(imgDataTest, cellSize, blockSize, numBins);
             
             [nCount, type] = ChooseMethod(featuresDataTrain, lblDataTrain, featuresDataTest, lblDataTest);
 
