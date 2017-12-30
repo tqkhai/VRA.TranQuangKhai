@@ -128,8 +128,8 @@ function Final()
             fprintf('Your choice is [5] deep features (DF)\n');
             
             fprintf('-----------------------------------------\n');
-            featureLayer = input('Layer to extract features from (layer): ');
-            outputAs = input('Format of output activations (OutputAs - rows (default) | columns | channels): ');
+            featureLayer = input('Layer to extract features from (layer): ', 's');
+            outputAs = input('Format of output activations (OutputAs - rows (default) | columns | channels): ', 's');
             miniBatchSize = input('Size of mini-batches (MiniBatchSize - default: 128): ');
             
             fprintf('-----------------------------------------\n');
