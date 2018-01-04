@@ -103,7 +103,7 @@ function Final()
             imds = splitEachLabel(imds, minSetCount, 'randomize');
             tbl02 = countEachLabel(imds)
 
-            load('bags.mat');
+            %load('bags.mat');
     
             bags = bagOfFeatures(imds, 'VocabularySize', vocabularySize, 'PointSelection', pointSelection, 'GridStep', gridStep);
             % save bags
@@ -119,7 +119,7 @@ function Final()
             xlabel('Visual word index');
             ylabel('Frequency of occurrence');
 
-            load('categoryClassifier.mat');
+            %load('categoryClassifier.mat');
              
             categoryClassifier = trainImageCategoryClassifier(imds, bags);
             % save category classifier
